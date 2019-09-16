@@ -1,56 +1,64 @@
 "use strict"
-document.getElementById("pTest").innerHTML = "js Works!";
+//document.getElementById("pTest").innerHTML = "js Works!";
 
-console.log("test log");
+//console.log("test log");
 
 ///////////////////////////////////////////////////////////////////
 
-
+//declare variables
+var diceArray = [];
 
 function initializeDiceArray(arrayOfDice) {
     for (let i = 0; i < 6; i++) {
-        arrayOfDice.push(dice.createDice(String((i + 1)), Number(), String((i + 1))));
+        let die = { dieName: "d" + (i + 1), sideCount: 6, pipCount: i + 1, keepStatus: false };
+        arrayOfDice.push(die);
     }
     return arrayOfDice;
 }
 
 function diceReport(arrayOfDice) {
+    function pipCompare(a, b) {
+        if (a.pipCount < b.pipCount) {
+            return -1;
+        }
+        if (a.pipCount > b.pipCount) {
+            return 1;
+        }
+        return 0;
+    }
+
+    arrayOfDice = arrayOfDice.sort(function (a, b) { return a.pipCount - b.pipCount });
     for (let i = 0; i < arrayOfDice.length; i++) {
-        console.log("d" + (i + 1) + " = " + arrayOfDice[i]);
+        console.log(arrayOfDice[i].dieName + " shows " + arrayOfDice[i].pipCount);
     }
     return arrayOfDice;
 }
 
-// function diceRoll(arrayOfDice, dieCount) {
-//     for (let i=0, i<dieCount-1; i++){
-//         arrayOfDice[i]=
-//     }
-//     return arrayOfDice;
-// }
+function diceRoll(arrayOfDice, countDiceToRoll) {
+    console.log("You roll the dice.");
 
-
-////////////////////////////////////////////////////
-
-//declare variables
-var diceArray = [];
-
-var dice = {
-    diceName: "",
-    sideCount: 6,
-    pipCount: Number(),
-    createDice: function () {
-        return "", this.sideCount, this.pipCount;
+    for (let i = 0; i < arrayOfDice.length; i++) {
+        if (arrayOfDice[i].keepStatus === false) {
+            arrayOfDice[i].pipCount = Number(Math.floor(Math.random() * 6) + 1);
+        }
     }
+
+    return arrayOfDice;
 }
 
 
-
+//clear the console
+console.clear();
 
 //initialize dice array
 diceArray = initializeDiceArray(diceArray);
 
 //log array values to console
+console.log("Welcome to Dice Game!  These are your dice:");
+
 diceReport(diceArray);
 
 //roll the dice
-//diceRoll(diceArray, 6);
+diceArray = diceRoll(diceArray, 6);
+console.log("Here is the new status of your dice:");
+diceReport(diceArray);
