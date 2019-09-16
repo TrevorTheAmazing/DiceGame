@@ -1,10 +1,6 @@
 "use strict"
 //document.getElementById("pTest").innerHTML = "js Works!";
-
-//console.log("test log");
-
 ///////////////////////////////////////////////////////////////////
-
 //declare variables
 var diceArray = [];
 
@@ -42,7 +38,6 @@ function diceRoll(arrayOfDice, countDiceToRoll) {
             arrayOfDice[i].pipCount = Number(Math.floor(Math.random() * 6) + 1);
         }
     }
-
     return arrayOfDice;
 }
 
