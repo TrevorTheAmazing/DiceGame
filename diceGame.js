@@ -2,14 +2,8 @@
 //document.getElementById("pTest").innerHTML = "js Works!";
 ///////////////////////////////////////////////////////////////////
 
-//declare variables
-var diceArray = [];
-var playerScore = 0;
-var diceCountInput = 0;
-var sideCountInput = 0;
-var practiceMode = true;
-
 function playGame(practiceModeIn) {
+    //helper function
     function initializeDiceArray(arrayOfDice, diceCountIn, sideCountIn) {
         for (let i = 0; i <= (diceCountIn - 1); i++) {
             let die = { dieName: "d" + (i + 1), sideCount: sideCountIn, pipCount: i + 1, keepStatus: false };
@@ -18,57 +12,86 @@ function playGame(practiceModeIn) {
         return arrayOfDice;
     }
 
+    //begin playGame(practiceModeIn)
     //initialize dice array
     diceArray = initializeDiceArray(diceArray, diceCountInput, sideCountInput);
 
+    // if (practiceModeIn === false) {
+    //     playerScore = playRealDiceGame(diceArray);
+    // }
+    // else {
+    //     playerScore = playPracticeMode(diceArray);
+    // }
+
+    let numberOfRounds = 1;
     if (practiceModeIn === false) {
-        playerScore = playRealDiceGame();
-    }
-    else {
-        playerScore = playPracticeMode();
+        numberOfRounds = 10;
     }
 
-    //!//game over    
-}
+    playerScore = playDiceGame(diceArray, numberOfRounds);
 
-function playRealDiceGame() {
-    let tempPlayerScore = 0;
-    for (let i = 0; i <= 3; i++) {
-        tempPlayerScore += playPracticeMode();
-    }
-    //!//scoreHand();
-    playerScore += tempPlayerScore;
-}
-function playPracticeMode() {
+    return playerScore;
+}//END playGame(practiceModeIn)
 
-    let tempPlayerScore = 0;
-    //welcome message
-    console.log("These are your dice:");
-
-    //play one turn
-    playOneTurn();
-
-    //tally the score of the kept dice
-    if (confirm("would you like to score your hand?") === true) {
-        tempPlayerScore += tallyScore(diceArray);
-    }
-    return tempPlayerScore;
-}
-
-function tallyScore(arrayOfDice) {
-    let tempScore = 0;
-    for (let i = 0; i <= 3; i++) {
-        if (arrayOfDice[i].keepStatus == true) {
-            //score
-            tempScore += arrayOfDice[i].pipCount;
+function playDiceGame(arrayOfDice, numberOfRounds) {
+    function clearKeepStatus(arrayOfDice) {
+        for (let i = 0; i < arrayOfDice.length; i++) {
+            arrayOfDice[i].keepStatus = false;
         }
+        return arrayOfDice;
     }
-    return tempScore;
-}
+    function tallyScore(arrayOfDice) {
+        let tempScore = 0;
+        for (let i = 0; i <= 3; i++) {
+            if (arrayOfDice[i].keepStatus == true) {
+                //score
+                tempScore += arrayOfDice[i].pipCount;
+            }
+        }
+        return tempScore;
+    }// END tallyScore(arrayOfDice)
+
+    //BEGIN playDiceGame(aOD, nOT)
+
+    for (let t = 1; t <= numberOfRounds; t++) {
+        let turnIsOver = false;
+        alert("Round " + t);
+        if ((t === 10) || (numberOfRounds === 1)) {
+            alert("this is the final turn!");
+            turnIsOver = true;
+        }
+        //clear keepStatus
+        arrayOfDice = clearKeepStatus(arrayOfDice);
+
+        for (let i = 1; i <= 3; i++) {
+            arrayOfDice = playOneTurn(arrayOfDice);
+            //option to score
+            if (confirm("would you like to score your hand?") == true) {
+                turnIsOver = true;
+                break;
+            }
+        }
+        // if (turnIsOver === true) {
+        //     break;
+        // }
+        //}
+
+        //!//scoreHand();
+        let turnScore = 0;
+        turnScore += tallyScore(arrayOfDice);
+
+        alert("the turn is over.  your score for this turn is " + turnScore);
+        playerScore += turnScore;
+        alert("your current score is " + playerScore);
+    }
+
+    return playerScore;
+}// END playDiceGame(aOD, nOT)
 
 
 
-function playOneTurn() {
+
+function playOneTurn(arrayOfDice) {
     function diceRoll(arrayOfDice) {
         alert("You roll the dice.");
 
@@ -89,30 +112,36 @@ function playOneTurn() {
     }
 
     function setKeepStatus(arrayOfDice) {
-        //set the keepStatus
+        //set the keepStatus to prevent rolling a dice that is 'kept'
         for (let i = 0; i < arrayOfDice.length; i++) {
-            alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.");
-            arrayOfDice[i].keepStatus = (prompt("Would you like to keep? y/n") === 'y');
+            if (arrayOfDice[i].keepStatus !== true) {
+                alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.");
+                arrayOfDice[i].keepStatus = (prompt("Would you like to keep? y/n") === 'y');
+            }
+
         }
         return arrayOfDice;
     }
 
-    //BEGIN playOneTurn()//
+
+    //BEGIN playOneTurn(diceArray)//
     //roll the dice
-    diceArray = diceRoll(diceArray, diceArray.length);
+    arrayOfDice = diceRoll(arrayOfDice, diceArray.length);
 
     //report the results
     console.log("Here is the new status of your dice:");
     //diceReport(diceArray);
-    diceArray = diceReport(diceArray);
+    arrayOfDice = diceReport(arrayOfDice);
 
     //option to keep
+    arrayOfDice = setKeepStatus(arrayOfDice);
 
-    //set the keepStatus to prevent rolling a dice that is 'kept'
-    setKeepStatus(diceArray);
+    return arrayOfDice;
+}// END playOneTurn(arrayOfDice);
+
+function gameOver(playerScoreIn) {
+    alert("game over.  your score is: " + playerScoreIn);
 }
-
-
 
 
 
@@ -120,17 +149,24 @@ function playOneTurn() {
 //clear the console
 console.clear();
 
+//declare variables
+var diceArray = [];
+var playerScore = 0;
+var diceCountInput = 0;
+var sideCountInput = 0;
+var practiceMode = true;
+
+//prompt for game info
 diceCountInput = Number(prompt("How many dice will you be playing with?"));
 sideCountInput = Number(prompt("How many sides shall your dice have?"));
 
 if ((diceCountInput == 5) && (sideCountInput == 6)) {
     if (prompt("Would you like to play a game that is not unlike 'Yahtzee?'") === 'y') {
-        //alert("call playGame(realDeal)");
         practiceMode = false;
     }
 }
 
-playGame(practiceMode);
+playerScore = playGame(practiceMode);
 
 //game over
-alert("game over.  your score is: " + playerScore);
+gameOver(playerScore);
