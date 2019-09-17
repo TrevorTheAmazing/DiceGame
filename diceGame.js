@@ -1,21 +1,31 @@
 "use strict"
 //TO DO:
-// 0. parameterize initializeDiceArray and diceRoll with sideCount
-// 1. prompt for sideCount at gametime to pass to initializeDiceArray and diceRoll
-// 2. prompt to set dice.keepStatus
+// DONE - 0. parameterize initializeDiceArray and diceRoll with sideCount
+// NO - 1. prompt for sideCount at gametime to pass to initializeDiceArray and diceRoll
+// *leave sideCount as a property of the dice being rolled; parameterizing that will not add any benefit to rollDice(arrayOfDice).
+//
+// DONE - 2. prompt to set dice.keepStatus
 // 3. 
 
 //document.getElementById("pTest").innerHTML = "js Works!";
 ///////////////////////////////////////////////////////////////////
+
+
 //declare variables
 var diceArray = [];
+var playerScore = 0;
+var diceCountInput = 0;
+var sideCountInput = 0;
+var practiceMode = true;
 
-
-function initializeDiceArray(arrayOfDice) {
+//function initializeDiceArray(arrayOfDice) {
+function initializeDiceArray(arrayOfDice, diceCountIn, sideCountIn) {
     //for (let i = 0; i < 6; i++) {
-    for (let i = 0; i <= (diceCountInput - 1); i++) {
+    //for (let i = 0; i <= (diceCountInput - 1); i++) {
+    for (let i = 0; i <= (diceCountIn - 1); i++) {
         //let die = { dieName: "d" + (i + 1), sideCount: 6, pipCount: i + 1, keepStatus: false };
-        let die = { dieName: "d" + (i + 1), sideCount: sideCountInput, pipCount: i + 1, keepStatus: false };
+        //let die = { dieName: "d" + (i + 1), sideCount: sideCountInput, pipCount: i + 1, keepStatus: false };
+        let die = { dieName: "d" + (i + 1), sideCount: sideCountIn, pipCount: i + 1, keepStatus: false };
         arrayOfDice.push(die);
     }
     return arrayOfDice;
@@ -42,7 +52,8 @@ function diceReport(arrayOfDice) {
 
 //function diceRoll(arrayOfDice, countDiceToRoll) {
 function diceRoll(arrayOfDice) {
-    console.log("You roll the dice.");
+    //console.log("You roll the dice.");
+    alert("You roll the dice.");
 
     for (let i = 0; i < arrayOfDice.length; i++) {
         if (arrayOfDice[i].keepStatus === false) {
@@ -62,57 +73,116 @@ function setKeepStatus(arrayOfDice) {
     }
 }
 
+function tallyScore(arrayOfDice) {
+    let tempScore = 0;
+    for (let i = 0; i <= 3; i++) {
+        if (arrayOfDice[i].keepStatus == true) {
+            //score
+            tempScore += arrayOfDice[i].pipCount;
+        }
+    }
+    return tempScore;
+}
 
+function playGame(practiceModeIn) {
+    //initialize dice array
+    //diceArray = initializeDiceArray(diceArray);
+    diceArray = initializeDiceArray(diceArray, diceCountInput, sideCountInput);
+
+    //!//diceReport(diceArray);  
+    switch (practiceModeIn) {
+        case (practiceModeIn === false):
+            playRealDiceGame();
+            break;
+        case (practiceModeIn === true):
+            playPracticeMode();
+            break;
+        default:
+            playPracticeMode();
+    }
+
+    //!//game over    
+}
+
+function playOneTurn() {
+    //roll the dice
+    diceArray = diceRoll(diceArray, diceArray.length);
+
+    //report the results
+    console.log("Here is the new status of your dice:");
+    diceReport(diceArray);
+
+    //option to keep
+
+    //set the keepStatus to prevent rolling a dice that is 'kept'
+    setKeepStatus(diceArray);
+
+    // //tally the score of the kept dice
+    // if (confirm("would you like to score your hand?") === true) {
+    //     playerScore += tallyScore(diceArray);
+    //}
+
+}
+
+function playPracticeMode() {
+
+    let tempPlayerScore = 0;
+    //welcome message
+    console.log("Welcome to Dice Game!  These are your dice:");
+
+    //play one turn
+    playOneTurn();
+
+    //tally the score of the kept dice
+    if (confirm("would you like to score your hand?") === true) {
+        tempPlayerScore += tallyScore(diceArray);
+
+        return tempPlayerScore;
+
+        // //roll the dice
+        // diceArray = diceRoll(diceArray, diceArray.length);
+
+        // //report the results
+        // console.log("Here is the new status of your dice:");
+        // diceReport(diceArray);
+
+        // //option to keep
+
+        // //set the keepStatus to prevent rolling a dice that is 'kept'
+        // setKeepStatus(diceArray);
+
+        // //tally the score of the kept dice
+        // if (confirm("would you like to score your hand?") === true) {
+        //     playerScore += tallyScore(diceArray);
+        // }
+
+    }
+}
+
+function playRealDiceGame() {
+    let tempPlayerScore = 0;
+    for (let i = 0; i <= 3; i++) {
+        tempPlayerScore += playPracticeMode();
+    }
+    playerScore += tempPlayerScore;
+}
+
+
+//BEGIN DICE GAME
 //clear the console
 console.clear();
 
-var diceCountInput = 0;
-var sideCountInput = 0;
+
 
 diceCountInput = Number(prompt("How many dice will you be playing with?"));
 sideCountInput = Number(prompt("How many sides shall your dice have?"));
 
 if ((diceCountInput == 5) && (sideCountInput == 6)) {
     if (prompt("Would you like to play a game that is not unlike 'Yahtzee?'") === 'y') {
-        alert("call playGame(realDeal)");
+        //alert("call playGame(realDeal)");
+        practiceMode = false;
     }
-    else {
-        alert("call playGame(practiceMode)");
-    }
-}
-
-//initialize dice array
-diceArray = initializeDiceArray(diceArray);
-
-//log array values to console
-console.log("Welcome to Dice Game!  These are your dice:");
-
-diceReport(diceArray);
-
-//roll the dice
-//diceArray = diceRoll(diceArray, 6);
-diceArray = diceRoll(diceArray, diceArray.length);
-console.log("Here is the new status of your dice:");
-diceReport(diceArray);
-
-//set the keepStatus to prevent rolling a dice that is 'kept'
-setKeepStatus(diceArray);
-
-//score the kept dice as the sum of the kept dice after three turns.
-//log the turn number.
-//add more conditions later for: multiples(2x,3x,5x), runs
-//log 'game over' and announe the score
-
-if (confirm("") === true) {
-    for (let i = 0; i <= 3; i++) {
-        //roll
-        //keep?
-    }
-    //score
 }
 
 //game over
-
-// playGame(gameMode){
-//     }
-
+alert("game over.  your score is: " + playerScore);
