@@ -172,8 +172,6 @@ function yahtzee(arrayOfDice) {
             globalBonusCondition = true;
         }
     }
-    globalBonusCondition = true;//!//
-    return true;
     return globalBonusCondition;
 }
 
