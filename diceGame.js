@@ -19,7 +19,6 @@ gameOver(playerScore);
 
 //END SCRIPT
 function playGame() {
-    //begin playGame(practiceModeIn)
     //initialize dice array
     console.log("welcome to dice game!");
     alert("welcome to dice game!");
@@ -45,13 +44,10 @@ function initializeDiceArray(arrayOfDice, diceCountIn, sideCountIn) {
 
 function playDiceGame(arrayOfDice, numberOfRounds) {
     for (let t = 1; t <= numberOfRounds; t++) {
-        //let turnIsOver = false;
         console.log("Round " + t);
         alert("Round " + t);
-        //if ((t === 10) || (numberOfRounds === 1)) {
         if (numberOfRounds === 1) {
             if (!globalBonusCondition) {
-                //turnIsOver = true;
                 console.log("this is the final turn!");
                 alert("this is the final turn!");
             }
@@ -61,7 +57,6 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
 
         let turnScore = 0;
 
-        //for (let i = 1; i <= 3; i++) {
         arrayOfDice = playOneTurn(arrayOfDice);
 
         //check for yahtzee
@@ -93,7 +88,6 @@ function clearKeepStatus(arrayOfDice) {
 }
 
 function playOneTurn(arrayOfDice) {
-    //BEGIN playOneTurn(diceArray)//
     //loop 3 times prior to ending the turn
     for (let i = 1; i < 4; i++) {
         //roll the dice
@@ -186,7 +180,6 @@ function doBonusRound() {
         alert("bonus roll " + i);
         arrayOfDiceBonus = diceRoll(arrayOfDiceBonus);
         console.log("Here is the new status of your dice:");
-        //diceReport(diceArray);
         arrayOfDiceBonus = diceReport(arrayOfDiceBonus);
         arrayOfDiceBonus = setKeepStatus(arrayOfDiceBonus);
     }
@@ -195,7 +188,7 @@ function doBonusRound() {
     for (let i = 0; i < arrayOfDiceBonus.length; i++) {
         bonusScore += arrayOfDiceBonus[i].pipCount;
         if (i == (arrayOfDiceBonus.length - 1)) {
-            //subtract the value of the last 
+            //subtract the value of the last dice
             bonusScore -= (2 * arrayOfDiceBonus[i].pipCount);
         }
     }
@@ -208,44 +201,7 @@ function doBonusRound() {
     return bonusScore;
 }
 
-
 function gameOver(playerScoreIn) {
     console.log("game over.  your final score is: " + playerScoreIn);
     alert("game over.  your final score is: " + playerScoreIn);
 }
-
-//game over
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
