@@ -17,9 +17,7 @@ var globalBonusCondition = false;
 playerScore = playGame();
 gameOver(playerScore);
 
-
-
-
+//END SCRIPT
 function playGame() {
     //begin playGame(practiceModeIn)
     //initialize dice array
@@ -66,9 +64,16 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
         //for (let i = 1; i <= 3; i++) {
         arrayOfDice = playOneTurn(arrayOfDice);
 
-        turnScore += tallyScore(arrayOfDice);
         //check for yahtzee
-        //!//
+        if (yahtzee(arrayOfDice) === true) {
+            console.log("yay B0NUS C0NDITI0N!");
+            alert("yay B0NUS C0NDITI0N!");
+            let bonusScore = 0;
+            bonusScore = doBonusRound();
+            turnScore += bonusScore;
+        }
+
+        turnScore += tallyScore(arrayOfDice);
         console.log("the turn is over.  your score for this turn is " + turnScore);
         alert("the turn is over.  your score for this turn is " + turnScore);
 
@@ -135,7 +140,13 @@ function setKeepStatus(arrayOfDice) {
     //set the keepStatus to prevent rolling a dice that is 'kept'
     for (let i = 0; i < arrayOfDice.length; i++) {
         if (arrayOfDice[i].keepStatus !== true) {
-            alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.");
+            if (globalBonusCondition) {
+                alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.  it has " + arrayOfDice[i].sideCount + " sides.");
+            }
+            else {
+                alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.");
+            }
+
             arrayOfDice[i].keepStatus = (prompt("Would you like to keep? y/n") === 'y');
         }
 
@@ -145,19 +156,11 @@ function setKeepStatus(arrayOfDice) {
 
 function tallyScore(arrayOfDice) {
     let tempScore = 0;
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i < arrayOfDice.length; i++) {
         if (arrayOfDice[i].keepStatus == true) {
             //score
             tempScore += arrayOfDice[i].pipCount;
         }
-    }
-    //check for yahtzee
-    if (yahtzee(arrayOfDice) == true) {
-        console.log("yay B0NUS C0NDITI0N!");
-        alert("yay B0NUS C0NDITI0N!");
-        let bonusScore = 0;
-        bonusScore = doBonusRound();
-        tempScore += bonusScore;
     }
     return tempScore;
 }// END tallyScore(arrayOfDice)
@@ -169,6 +172,8 @@ function yahtzee(arrayOfDice) {
             globalBonusCondition = true;
         }
     }
+    globalBonusCondition = true;//!//
+    return true;
     return globalBonusCondition;
 }
 
@@ -179,11 +184,16 @@ function doBonusRound() {
     arrayOfDiceBonus = initializeDiceArray(arrayOfDiceBonus, 5, sideCountInput + 1);
 
     for (let i = 0; i < arrayOfDiceBonus.length; i++) {
+        console.log("bonus roll " + i);
+        alert("bonus roll " + i);
         arrayOfDiceBonus = diceRoll(arrayOfDiceBonus);
+        console.log("Here is the new status of your dice:");
+        //diceReport(diceArray);
+        arrayOfDiceBonus = diceReport(arrayOfDiceBonus);
         arrayOfDiceBonus = setKeepStatus(arrayOfDiceBonus);
     }
 
-    //score the bonus array *MIND THE KEPT STATUS*
+    //score the bonus array
     for (let i = 0; i < arrayOfDiceBonus.length; i++) {
         bonusScore += arrayOfDiceBonus[i].pipCount;
         if (i == (arrayOfDiceBonus.length - 1)) {
