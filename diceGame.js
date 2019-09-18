@@ -38,7 +38,8 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
         for (let i = 0; i <= 3; i++) {
             if (arrayOfDice[i].keepStatus == true) {
                 //score
-                tempScore += arrayOfDice[i].pipCount;
+                //tempScore += arrayOfDice[i].pipCount;
+                tempScore += findBestScore(arrayOfDice);//!//
             }
         }
         return tempScore;
@@ -77,9 +78,6 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
     return playerScore;
 }// END playDiceGame(aOD, nOT)
 
-
-
-
 function playOneTurn(arrayOfDice) {
     function diceRoll(arrayOfDice) {
         alert("You roll the dice.");
@@ -115,7 +113,7 @@ function playOneTurn(arrayOfDice) {
 
 
     //BEGIN playOneTurn(diceArray)//
-    //!//loop 3 times prior to ending the turn
+    //loop 3 times prior to ending the turn
     for (let i = 1; i < 4; i++) {
         //roll the dice
         arrayOfDice = diceRoll(arrayOfDice, diceArray.length);
@@ -131,6 +129,18 @@ function playOneTurn(arrayOfDice) {
 
     return arrayOfDice;
 }// END playOneTurn(arrayOfDice);
+
+//!//
+function findBestScore(arrayOfDice) {
+    let tempBestScore = 0;
+
+    //check for yahtzee
+    //if (checkMultiplesConditions){}
+    //else if (check runs conditions) 
+    return tempBestScore;
+}
+
+
 
 function gameOver(playerScoreIn) {
     alert("game over.  your final score is: " + playerScoreIn);
