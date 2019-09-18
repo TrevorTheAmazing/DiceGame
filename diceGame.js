@@ -16,13 +16,6 @@ function playGame(practiceModeIn) {
     //initialize dice array
     diceArray = initializeDiceArray(diceArray, diceCountInput, sideCountInput);
 
-    // if (practiceModeIn === false) {
-    //     playerScore = playRealDiceGame(diceArray);
-    // }
-    // else {
-    //     playerScore = playPracticeMode(diceArray);
-    // }
-
     let numberOfRounds = 1;
     if (practiceModeIn === false) {
         numberOfRounds = 10;
@@ -71,12 +64,8 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
                 break;
             }
         }
-        // if (turnIsOver === true) {
-        //     break;
-        // }
-        //}
 
-        //!//scoreHand();
+
         let turnScore = 0;
         turnScore += tallyScore(arrayOfDice);
 
@@ -145,8 +134,8 @@ function gameOver(playerScoreIn) {
 
 
 
-//BEGIN DICE GAME
-//clear the console
+//BEGIN DICE GAME////
+//clear the console//
 console.clear();
 
 //declare variables
