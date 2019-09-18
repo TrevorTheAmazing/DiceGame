@@ -85,6 +85,7 @@ function playOneTurn(arrayOfDice) {
         alert("You roll the dice.");
 
         for (let i = 0; i < arrayOfDice.length; i++) {
+            //don't reroll kept dice
             if (arrayOfDice[i].keepStatus === false) {
                 arrayOfDice[i].pipCount = Number(Math.floor(Math.random() * arrayOfDice[i].sideCount) + 1);
             }
@@ -114,22 +115,25 @@ function playOneTurn(arrayOfDice) {
 
 
     //BEGIN playOneTurn(diceArray)//
-    //roll the dice
-    arrayOfDice = diceRoll(arrayOfDice, diceArray.length);
+    //!//loop 3 times prior to ending the turn
+    for (let i = 1; i < 4; i++) {
+        //roll the dice
+        arrayOfDice = diceRoll(arrayOfDice, diceArray.length);
 
-    //report the results
-    console.log("Here is the new status of your dice:");
-    //diceReport(diceArray);
-    arrayOfDice = diceReport(arrayOfDice);
+        //report the results
+        console.log("Here is the new status of your dice:");
+        //diceReport(diceArray);
+        arrayOfDice = diceReport(arrayOfDice);
 
-    //option to keep
-    arrayOfDice = setKeepStatus(arrayOfDice);
+        //option to keep
+        arrayOfDice = setKeepStatus(arrayOfDice);
+    }
 
     return arrayOfDice;
 }// END playOneTurn(arrayOfDice);
 
 function gameOver(playerScoreIn) {
-    alert("game over.  your score is: " + playerScoreIn);
+    alert("game over.  your final score is: " + playerScoreIn);
 }
 
 
