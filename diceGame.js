@@ -31,11 +31,11 @@ function initializeDiceArray(arrayOfDice, diceCountIn, sideCountIn) {
     for (let i = 0; i <= (diceCountIn - 1); i++) {
         if (globalBonusCondition) {
             let tempIter = Number(i + 7);
-            let die = { dieName: "b" + (i + 1), sideCount: tempIter, pipCount: (tempIter + 1), keepStatus: false };
+            let die = { dieName: "bonus die #" + (i + 1), sideCount: tempIter, pipCount: (tempIter + 1), keepStatus: false };
             arrayOfDice.push(die);
         }
         else {
-            let die = { dieName: "d" + (i + 1), sideCount: sideCountIn, pipCount: (i + 1), keepStatus: false };
+            let die = { dieName: "die #" + (i + 1), sideCount: sideCountIn, pipCount: (i + 1), keepStatus: false };
             arrayOfDice.push(die);
         }
     }
@@ -45,11 +45,11 @@ function initializeDiceArray(arrayOfDice, diceCountIn, sideCountIn) {
 function playDiceGame(arrayOfDice, numberOfRounds) {
     for (let t = 1; t <= numberOfRounds; t++) {
         console.log("Round " + t);
-        alert("Round " + t);
+        //alert("Round " + t);
         if (numberOfRounds === 1) {
             if (!globalBonusCondition) {
                 console.log("this is the final turn!");
-                alert("this is the final turn!");
+                //alert("this is the final turn!");
             }
         }
         //clear keepStatus at the beginning of a turn
@@ -62,7 +62,7 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
         //check for yahtzee
         if (yahtzee(arrayOfDice) === true) {
             console.log("yay B0NUS C0NDITI0N!");
-            alert("yay B0NUS C0NDITI0N!");
+            //alert("yay B0NUS C0NDITI0N!");
             let bonusScore = 0;
             bonusScore = doBonusRound();
             turnScore += bonusScore;
@@ -70,11 +70,11 @@ function playDiceGame(arrayOfDice, numberOfRounds) {
 
         turnScore += tallyScore(arrayOfDice);
         console.log("the turn is over.  your score for this turn is " + turnScore);
-        alert("the turn is over.  your score for this turn is " + turnScore);
+        //alert("the turn is over.  your score for this turn is " + turnScore);
 
         playerScore += turnScore;
         console.log("your current score is " + playerScore);
-        alert("your current score is " + playerScore);
+        //alert("your current score is " + playerScore);
     }
 
     return playerScore;
@@ -92,8 +92,9 @@ function playOneTurn(arrayOfDice) {
     for (let i = 1; i < 4; i++) {
         //roll the dice
         console.log("roll " + i);
-        alert("roll " + i);
-        arrayOfDice = diceRoll(arrayOfDice, diceArray.length);
+        //alert("roll " + i);
+        //arrayOfDice = diceRoll(arrayOfDice, diceArray.length);
+        arrayOfDice = diceRoll(arrayOfDice);
 
         //report the results
         console.log("Here is the new status of your dice:");
@@ -104,7 +105,7 @@ function playOneTurn(arrayOfDice) {
         arrayOfDice = setKeepStatus(arrayOfDice);
 
         console.log("end of roll " + i);
-        alert("end of roll " + i);
+        //alert("end of roll " + i);
     }
 
     return arrayOfDice;
@@ -125,7 +126,8 @@ function diceRoll(arrayOfDice) {
 function diceReport(arrayOfDice) {
     arrayOfDice = arrayOfDice.sort(function (a, b) { return a.pipCount - b.pipCount });
     for (let i = 0; i < arrayOfDice.length; i++) {
-        console.log(arrayOfDice[i].dieName + " shows " + arrayOfDice[i].pipCount);
+        //let die = { dieName: "bonus die #" + (i + 1), sideCount: tempIter, pipCount: (tempIter + 1), keepStatus: false };
+        console.log(i + " shows " + arrayOfDice[i].pipCount);
     }
     return arrayOfDice;
 }
@@ -135,15 +137,20 @@ function setKeepStatus(arrayOfDice) {
     for (let i = 0; i < arrayOfDice.length; i++) {
         if (arrayOfDice[i].keepStatus !== true) {
             if (globalBonusCondition) {
-                alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.  it has " + arrayOfDice[i].sideCount + " sides.");
+                //console.log(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.  it has " + arrayOfDice[i].sideCount + " sides.");
+                console.log(i + " is showing " + arrayOfDice[i].pipCount + " after the roll.  it has " + arrayOfDice[i].sideCount + " sides.");
             }
-            else {
-                alert(arrayOfDice[i].dieName + " is showing " + arrayOfDice[i].pipCount + " after the roll.");
-            }
-
-            arrayOfDice[i].keepStatus = (prompt("Would you like to keep? y/n") === 'y');
         }
+    }
+    let tempKeepers = prompt("Please enter the indices you would like to keep:");
+    //console.log(tempKeepers);
 
+    if (tempKeepers.length > 0) {
+        for (let i = 0; i < tempKeepers.length; i++) {
+            let tempNum = 0;
+            tempNum = tempKeepers[i];
+            arrayOfDice[tempNum].keepStatus = true;
+        }
     }
     return arrayOfDice;
 }
@@ -162,7 +169,7 @@ function tallyScore(arrayOfDice) {
 function yahtzee(arrayOfDice) {
     let tempNum = arrayOfDice[0].pipCount;
     for (let i = 0; i < arrayOfDice.length; i++) {
-        if ((arrayOfDice[i].pipCount === tempNum) && (i === arrayOfDice.length)) {
+        if ((arrayOfDice[i].pipCount === tempNum) && (i === arrayOfDice.length - 1)) {
             globalBonusCondition = true;
         }
     }
@@ -177,7 +184,7 @@ function doBonusRound() {
 
     for (let i = 0; i < arrayOfDiceBonus.length; i++) {
         console.log("bonus roll " + i);
-        alert("bonus roll " + i);
+        //alert("bonus roll " + i);
         arrayOfDiceBonus = diceRoll(arrayOfDiceBonus);
         console.log("Here is the new status of your dice:");
         arrayOfDiceBonus = diceReport(arrayOfDiceBonus);
@@ -193,9 +200,9 @@ function doBonusRound() {
         }
     }
     console.log("you scored " + bonusScore + " in the bonus round.");
-    alert("you scored " + bonusScore + " in the bonus round.");
+    //alert("you scored " + bonusScore + " in the bonus round.");
     console.log("the bonus round is over.");
-    alert("the bonus round is over.");
+    //alert("the bonus round is over.");
 
     globalBonusCondition = false;
     return bonusScore;

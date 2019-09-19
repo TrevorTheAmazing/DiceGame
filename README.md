@@ -17,6 +17,7 @@ DONE - (10 points): As a developer, I want to utilize six different dice within 
 
 Reminder: There is absolutely no front-end requirement for this project! The game can be ran/played entirely through the console or by using alerts and prompts. Any front-end work should come only after the MVP (Minimum Viable Product) of the game has been achieved.
 
+
 1. player gets 3 turns
 2. there are 3 rolls per turn
 3. the object is to get the highest score
