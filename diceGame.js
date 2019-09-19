@@ -14,8 +14,15 @@ var diceCountInput = 5;
 var sideCountInput = 6;
 var globalBonusCondition = false;
 
-playerScore = playGame();
-gameOver(playerScore);
+var button = document.getElementById("playGame");
+
+button.onclick = function () {
+    playerScore = playGame();
+    gameOver(playerScore);
+}
+
+// playerScore = playGame();
+// gameOver(playerScore);
 
 //END SCRIPT
 function playGame() {
